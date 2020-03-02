@@ -13,7 +13,10 @@ def single_process_counter():
             else:
                 count_dict[char] = 1
 
-    print(count_dict)
+    sorted_count = dict(sorted(count_dict.items()))
+    for item in sorted_count.items():
+        print(item)
+    return sorted_count
 
 
 if __name__ == '__main__':
