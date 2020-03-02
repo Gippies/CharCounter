@@ -1,7 +1,9 @@
 import multiprocessing
+import os
 
 
 def _core_counter(lines, sender_conn):
+    print(f"Hello! I'm {os.getpid()}")
     count_dict = {}
     for line in lines:
         for char in line:
@@ -13,11 +15,20 @@ def _core_counter(lines, sender_conn):
 
 
 def _receiver_counter(num_of_cores, receiver_connections):
+    print(f"Hello! I'm {os.getpid()}")
     count_dict_list = []
     for i in range(num_of_cores):
         count_dict_list.append(receiver_connections[i].recv())
+    final_count_dict = {}
     for d in count_dict_list:
-        print(d)
+        for k, v in d.items():
+            if k in final_count_dict:
+                final_count_dict[k] += v
+            else:
+                final_count_dict[k] = v
+    final_count_dict = dict(sorted(final_count_dict.items()))
+    for i in final_count_dict.items():
+        print(i)
 
 
 def multi_process_counter():
